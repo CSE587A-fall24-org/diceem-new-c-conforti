@@ -144,8 +144,8 @@ def m_step(expected_counts_by_die: NDArray[np.float_]):
 
     # REPLACE EACH NONE BELOW WITH YOUR CODE. 
     updated_priors = [updated_type_1_frequency/total_frequency,updated_type_2_frequency/total_frequency]
-    updated_type_1_face_probs = (expected_counts_by_die[0]-expected_counts_by_die[0].min())/(expected_counts_by_die[0].max()-expected_counts_by_die[0].min())
-    updated_type_2_face_probs = (expected_counts_by_die[1]-expected_counts_by_die[1].min())/(expected_counts_by_die[1].max()-expected_counts_by_die[1].min())
+    updated_type_1_face_probs = expected_counts_by_die[0]/total_frequency
+    updated_type_2_face_probs = expected_counts_by_die[1]/total_frequency
     
     updated_bag_of_dice = BagOfDice(updated_priors,
                                     [Die(updated_type_1_face_probs),
