@@ -116,7 +116,10 @@ def e_step(experiment_data: List[NDArray[np.int_]],
     for i in range(len(experiment_data)):
         posterior_probs = dice_posterior(experiment_data[i],bag_of_dice) # type: ignore
         expected_count.append(experiment_data[i]*posterior_probs)
-    expected_counts = np.array(expected_count)
+    raw_counts = np.array(expected_count)
+    total_counts = np.sum(raw_counts,axis=0)
+    expected_counts=np.array(total_counts)
+
     return expected_counts
 
 def m_step(expected_counts_by_die: NDArray[np.float_]):
@@ -144,8 +147,8 @@ def m_step(expected_counts_by_die: NDArray[np.float_]):
 
     # REPLACE EACH NONE BELOW WITH YOUR CODE. 
     updated_priors = [updated_type_1_frequency/total_frequency,updated_type_2_frequency/total_frequency]
-    updated_type_1_face_probs = expected_counts_by_die[0]/total_frequency
-    updated_type_2_face_probs = expected_counts_by_die[1]/total_frequency
+    updated_type_1_face_probs = expected_counts_by_die[0]/updated_type_1_frequency
+    updated_type_2_face_probs = expected_counts_by_die[1]/updated_type_2_frequency
     
     updated_bag_of_dice = BagOfDice(updated_priors,
                                     [Die(updated_type_1_face_probs),
