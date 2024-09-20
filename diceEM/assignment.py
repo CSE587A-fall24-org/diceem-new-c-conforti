@@ -111,14 +111,19 @@ def e_step(experiment_data: List[NDArray[np.int_]],
     # To get the total expected counts for each type, you sum the expected
     # counts for each type over all the draws.  
 
-    expected_count=[]
+    expected_count_one=[]
+    expected_count_two=[]
 
     for i in range(len(experiment_data)):
         posterior_probs = dice_posterior(experiment_data[i],bag_of_dice) # type: ignore
-        expected_count.append(experiment_data[i]*posterior_probs)
-    raw_counts = np.array(expected_count)
-    total_counts = np.sum(raw_counts,axis=0)
-    expected_counts=np.array(total_counts)
+        expected_count_one.append([experiment_data[i]*posterior_probs])
+        expected_count_two.append([experiment_data[i]*(1-posterior_probs)])
+    raw_counts_one = np.array(expected_count_one)
+    total_counts_one = np.sum(raw_counts_one,axis=0)
+    raw_counts_two = np.array(expected_count_two)
+    total_counts_two = np.sum(raw_counts_two,axis=0)
+    #split this into two... but should I have? also tried nesting for loops
+    expected_counts=np.append(total_counts_one,total_counts_two,axis=0)
 
     return expected_counts
 
